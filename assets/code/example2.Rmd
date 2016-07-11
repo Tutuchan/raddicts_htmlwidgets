@@ -1,0 +1,37 @@
+---
+title: "morrisjs"
+output: html_document
+---
+
+## Line charts
+
+```{r, message=FALSE}
+library(morrisjs)
+morrisjs(mdeaths) %>% 
+  mjsLine()
+```
+
+
+## Bar charts
+
+```{r}
+morrisjs(mdeaths) %>% 
+  mjsBar()
+```
+
+## Multiple series
+
+```{r}
+morrisjs(ts.union(fdeaths, mdeaths)) %>% 
+  mjsLine()
+```
+
+## Options
+
+Options are available on the [morris.js](http://morrisjs.github.io/morris.js/lines.html) github page and are passed as a list through the *options* parameter.
+
+```{r}
+morrisjs(ts.union(fdeaths, mdeaths)) %>% 
+  mjsLine(options = list(pointSize = 1, postUnits = " deaths"))
+```
+

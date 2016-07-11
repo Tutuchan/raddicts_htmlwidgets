@@ -1,0 +1,11 @@
+---
+title: "sparkline in Rmd documents"
+output: html_document
+---
+
+```{r}
+library(sparkline)
+x = rnorm(20)
+sparkline(x, width = 400, height = 100)
+```
+

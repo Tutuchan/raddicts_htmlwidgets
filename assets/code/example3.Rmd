@@ -1,0 +1,33 @@
+---
+title: "d3treeR"
+output: html_document
+---
+
+Example from [https://github.com/timelyportfolio/d3treeR](https://github.com/timelyportfolio/d3treeR)
+
+## Data
+
+```{r, message=FALSE}
+library(treemap)
+library(d3treeR)
+data(GNI2014)
+
+knitr::kable(head(GNI2014, row.names = FALSE))
+```
+
+## Treemap
+
+```{r}
+tm <- treemap(GNI2014, 
+              index=c("continent", "iso3"), 
+              vSize="population", 
+              vColor="GNI", 
+              type="value")
+```
+
+## d3 treemap
+
+```{r}
+d3tree(tm, rootname = "World")
+```
+
