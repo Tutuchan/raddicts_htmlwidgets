@@ -1,0 +1,975 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>htmlwidgets - an introduction</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 2.4em; }
+      .remark-slide-content h2 { font-size: 1.8em; }
+      .remark-slide-content h3 { font-size: 1.4em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      a, a > code {
+        color: rgb(249, 38, 114);
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.6em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.7em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.7em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 30%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        font-size: 18px;
+        width: 65%;
+        float: right;
+        padding-top: 1em;
+      }
+      
+      /* Custom css */
+      .remark-code {
+        font-size: 13px;
+      }
+      
+      .small-text {
+        font-size: 12px;
+      }
+      
+      .images-fit {
+        width: 100%;
+        max-width: 100%;
+      }
+      
+      .quote {
+        border-left-style: solid;
+        padding-left: 10px;
+      }
+      
+      
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse
+        
+#htmlwidgets - an introduction
+        
+###RAddicts Meetup - Paris - July 12, 2016
+        
+Pierre Formont
+
+
+---
+#Contents
+        
++ htmlwidgets
+    + what it is
+    + how it works
+    
++ simple examples
+    + sparkline
+    + morrisjs
+    
++ a more complex example: d3treeR
+
+---
+class: center, middle, inverse
+## htmlwidgets
+---
+layout: false
+.left-column[
+  ## What is it?
+]
+.right-column[
+  **A framework to easily create bindings between R and JavaScript libraries.**
+  
+  Started as a project by [Ramnath Vaidyanathan](https://github.com/ramnathv), based on [JJ Allaire](https://github.com/jjallaire)'s justgage project.
+  
+  Now a team effort by  Ramnath Vaidyanathan, [Joe Cheng](https://github.com/jcheng5), JJ Allaire, [Yihui Xie](https://github.com/yihui), and [Kenton Russell](https://github.com/timelyportfolio).
+
+]
+---
+.left-column[
+  ## What is it?
+  ## Why use it?
+]
+.right-column[
+
+Several existing plotting frameworks for R: base R, ggplot2, lattice, etc.
+
+However: 
+
++ no interactivity,
++ creating appealing graphs in base R can be considered a challenge,
++ many existing JavaScript libraries already designed for this purpose
+
+**Using htmlwidgets, a user can create beautiful and powerful interactive visualizations without leaving R.**
+
+Creating widgets is a bit more difficult but still relatively easy if:
++ you know how to create R packages,
++ you have some notions of HTML, JavaScript and CSS.
+
+Those are not even required if you have the desire to learn.
+
+]
+
+
+---
+.left-column[
+  ## What is it?
+  ## Why use it?
+  ## More than charts
+]
+.right-column[
+  
+Many bindings to JavaScript charting libraries have been created using this framework : 
+  
++ [dygraphs](http://rstudio.github.io/dygraphs/),
++ [highcharter](http://jkunst.com/highcharter/),
++ [metricsgraphics](http://hrbrmstr.github.io/metricsgraphics/)
+
+But also to libraries with other purposes:
+ 
++ [leaflet](http://rstudio.github.io/leaflet/): dynamic maps,
++ [DataTables](http://rstudio.github.io/DT/): tabular data,
++ [d3heatmap](https://github.com/rstudio/d3heatmap): heatmaps
+]
+---
+class: center, middle, inverse
+
+## How it works
+---
+
+.left-column[
+  ## Widgets
+  ### - Directory structure
+]
+.right-column[
+Widgets are just R packages with a specific structure in the `inst` directory. Here is an example from the **morrisjs** package.
+
+![](../assets/widget_directory.png)
+
+]
+
+---
+.left-column[
+  ## Widgets
+  ### - Directory structure
+  ### - Process
+]
+.right-column[
+
+Ultimately, the purpose of the package is to export a function which will transfer data from the R session to a webpage where a chart will be drawn using this data.
+
+At least three files are needed to create a widget : 
+
++ an R binding file located at `R/widget_name.R`,
++ a JavaScript binding file located at `inst/htmlwidgets/widget_name.js`
++ a file to list dependencies located at `inst/htmlwidgets/widget_name.yaml`
+
+The JavaScript library to bind to is located by convention in the `inst/htmlwidgets/lib` folder.
+
+The process is as follows:
+
++ the R binding collects data from the R session,
++ an HTML element is created on the target webpage (the RStudio Viewer, a new page in a browser, a webpage created by an RMarkdown document, etc.), typically a `div`,
++ the JavaScript binding instantiates the widget on this HTML element.
+]
+
+
+---
+.left-column[
+  ## Widgets
+  ### - Directory structure
+  ### - Process
+  ## R binding
+]
+.right-column[
+
+The `scaffoldWidget` function in the **htmlwidgets** creates templates for the binding. 
+The example widget displays a message on a webpage.
+```r
+widgetexample <- function(message, 
+                          width = NULL, 
+                          height = NULL) {
+
+  # forward options using x
+  x = list(
+    message = message
+  )
+
+  # create widget
+  htmlwidgets::createWidget(
+    name = 'widgetexample',
+    x,
+    width = width,
+    height = height,
+    package = 'widgetexample'
+  )
+}
+```
+
+Three parameters:
++ one for the data to pass to the widget, here *message*,
++ two for the dimensions of the widget, *width* and *height* (must be `NULL` or valid CSS values).
+]
+
+
+---
+.left-column[
+  ## Widgets
+  ### - Directory structure
+  ### - Process
+  ## R binding
+]
+.right-column[
+
+```r
+  x = list(
+    message = message
+  )
+```
+
+Store all data that will be passed to the widget in a list.
+
+```r
+  # create widget
+  htmlwidgets::createWidget(
+    name = 'widgetexample',
+    x,
+    width = width,
+    height = height,
+    package = 'widgetexample'
+  )
+}
+```
+The `createWidget` function passes the data to the JavaScript binding. The `x` list will be serialized in JSON format *via* **jsonlite**.
+]
+
+---
+.left-column[
+  ## Widgets
+  ### - Directory structure
+  ### - Process
+  ## R binding
+  ## JavaScript binding
+]
+.right-column[
+```javascript
+HTMLWidgets.widget({
+  name: 'widgetexample',
+  type: 'output',
+  factory: function(el, width, height) {
+    // TODO: define shared variables for this 
+    // instance
+    return {
+      renderValue: function(x) {
+        // TODO: code to render the widget, e.g.
+        el.innerText = x.message;
+      },
+      resize: function(width, height) {
+        // TODO: code to re-render the widget with a 
+        // new size
+      }
+    };
+  }
+});
+```
+
+In JavaScript, factory functions are functions that return objects. This function will create an instance of the widget to display it on the webpage.
+
+It takes three parameters:
++ *el*: the HTML element that contains the widget,
++ *width* and *height*: the dimensions of this element
+]
+
+---
+.left-column[
+  ## Widgets
+  ### - Directory structure
+  ### - Process
+  ## R binding
+  ## JavaScript binding
+]
+.right-column[
+```javascript
+renderValue: function(x) {
+  el.innerText = x.message;
+}
+```
+The `renderValue` function is the function that renders the widget. Here it simply sets the text of the HTML element to the message that was passed from R.
+
+```javascript
+resize: function(width, height) {
+}
+```
+
+The `resize` function is called whenever the HTML element needs to be resized. Some libraries include resize functions for their elements while other don''t. 
+
+]
+---
+.left-column[
+  ## Widgets
+  ### - Directory structure
+  ### - Process
+  ## R binding
+  ## JavaScript binding
+  ## Dependencies
+]
+.right-column[
+
+The YAML file lists all dependencies needed by the widget. 
+
+These can be JavaScript files or CSS stylesheets.
+
+Here is an example:
+```
+dependencies:
+  - name: foo
+    version: 1.0
+    src: htmlwidgets/lib/foo-1.0
+    script: jquery-1.0.js
+  - name: bar
+    version: 2.0
+    src: htmlwidgets/lib/bar-2.0
+    stylesheet: bar.css
+```
+]
+---
+class: center, middle, inverse
+
+## Simple examples
+---
+
+.left-column[
+  ## sparkline
+]
+.right-column[
+
+The [sparkline](https://github.com/htmlwidgets/sparkline) widget is a very simple widget that interfaces with the [sparkline](http://omnipotent.net/jquery.sparkline/#s-about) jQuery plugin.
+
+It creates very simple graphs:
+
+![](../assets/sparklines.png)
+
+.small-text[.right[Image from https://github.com/htmlwidgets/sparkline]]
+
+The usage is very simple as well: 
+
+```r
+x = rnorm(20)
+sparkline(x)
+sparkline(x, type = 'bar')
+sparkline(x, type = 'box')
+```
+
+]
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+]
+.right-column[
+
+```r
+sparkline <- function(values, 
+                      ..., 
+                      width = 60, 
+                      height = 20){
+  params = list(
+    values = values, 
+    options = list(..., 
+                   height = height, 
+                   width = width), 
+    width = width , height = height
+  )
+  params = Filter(Negate(is.null), params)
+  htmlwidgets::createWidget('sparkline', 
+    params,
+    width = width,
+    height = height,
+*   sizingPolicy = htmlwidgets::sizingPolicy(
+*     viewer.fill = FALSE 
+    )
+  )
+}
+```
+[Sizing policy](http://www.htmlwidgets.org/develop_sizing.html) dictates how the widget will be sized depending on the environment (RStudio Viewer, browser, etc.).
+
+]
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+  ### - JavaScript binding
+]
+.right-column[
+
+```javascript
+HTMLWidgets.widget({
+  name: "sparkline",
+  type: "output",
+  renderValue: function(el, data) {
+    $(el).sparkline(data.values, data.options);
+  }
+});
+```
+
+.small-text[.right[*Note this is the older version of the JavaScript bindings, without factory functions.*]]
+
+What happens here is:
++ the HTML element and the data are passed to the `renderValue` function,
++ the *data* parameters contains the elements that were in the *params* list in the R binding but transformed into JSON format,
++ the HTML element is found in the page thanks to `$(el)`,
++ the JavaScript `sparkline` method is called on this element with the data values and options.
+
+]
+
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+  ### - JavaScript binding
+  ### - Dependencies
+  ]
+.right-column[
+
+This widget depends on jQuery and the sparkline plugin:
+
+```
+dependencies:
+  - name: jquery
+    version: 2.1.1
+    src: "lib"
+    script: jquery.min.js
+  - name: jquery-sparkline
+    version: 2.1.2
+    src: "lib"
+    script: jquery.sparkline.min.js
+```
+]
+
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+  ### - JavaScript binding
+  ### - Dependencies
+  ## morrisjs
+  ]
+.right-column[
+
+The [morrisjs](https://github.com/tutuchan/morrisjs) widget is a simple widget that interfaces with the [morris.js](http://morrisjs.github.io/morris.js/) JavaScript library.
+
+You can create line charts, bar charts, area charts and donut charts with it:
+
+.images-fit[![:scale 100%](../assets/morrisjs.png)]
+
+]
+
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+  ### - JavaScript binding
+  ### - Dependencies
+  ## morrisjs
+  ### - JavaScript API
+  ]
+.right-column[
+
+Charts are instantiated by calling the relevant function and passing it several parameters. For example for a Line chart:
+
+```javascript
+new Morris.Line({
+  // ID of the element in which to draw the chart.
+  element: 'myfirstchart',
+  // Chart data records -- each entry in this array corresponds to a 
+  // point on the chart.
+  data: [
+    { year: '2008', value: 20 },
+    { year: '2009', value: 10 },
+    { year: '2010', value: 5 },
+    { year: '2011', value: 5 },
+    { year: '2012', value: 20 }
+  ],
+  // The name of the data record attribute that contains x-values.
+  xkey: 'year',
+  // A list of names of data record attributes that contain y-values.
+  ykeys: ['value'],
+  // Labels for the ykeys -- will be displayed when you hover over the
+  // chart.
+  labels: ['Value']
+});
+```
+
+]
+
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+  ### - JavaScript binding
+  ### - Dependencies
+  ## morrisjs
+  ### - JavaScript API
+  ### - R binding
+  ]
+.right-column[
+
+```r
+morrisjs <- function(data, 
+                     width = NULL, 
+                     height = NULL) {
+
+  # forward options using x
+  x = list(
+    data = data,
+*   element = paste0("htmlwidget-", 
+*                    digest::digest(Sys.time())),
+    resize = TRUE,
+    hideHover = TRUE
+  )
+
+  # create widget
+  htmlwidgets::createWidget(
+    name = 'morrisjs',
+    x,
+    width = width,
+    height = height,
+    package = 'morrisjs',
+*   elementId = x$element
+  )
+}
+```
+
+This binding is a little more complex because of how the **morris.js** library instantiates charts.
+
+The id is created in the R binding and passed in `x$element` both to the JavaScript binding and to the `createWidget` function.
+
+** *data* must be an object of class `ts`, `xts` or `mts` or a `data.frame` whose first column contains `Date` objects.**
+
+]
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+  ### - JavaScript binding
+  ### - Dependencies
+  ## morrisjs
+  ### - JavaScript API
+  ### - R binding
+  ]
+.right-column[
+
+Actually a lot of the R processing is done outside this widget declaration: I created several functions that modify the object returned by the `morrisjs` function in order to have a more modular package. 
+
+The pipe operator `%>%` allows for smooth chaining between the `morrisjs` function and the chart drawing functions.
+
+For example, to draw a line chart, you'll actually use the `mjsLine` function this way:
+
+```r
+morrisjs(mdeaths) %>% 
+  mjsLine
+```
+
+A bar or an area chart are drawn in a similar manner with the `mjsBar` and `mjsArea` functions. These functions then call the `baseChart` functions with different parameters:
+
+```r
+mjsLine <- function(morrisjs, options = NULL){
+  baseChart(morrisjs, "Line", options = options)
+}
+```
+]
+
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+  ### - JavaScript binding
+  ### - Dependencies
+  ## morrisjs
+  ### - JavaScript API
+  ### - R binding
+  ]
+.right-column[
+
+```r
+baseChart <- function(morrisjs, type, options){
+  tsData <- morrisjs$x$data
+  
+  # Transform data to xts
+  xtsData <- switch(class(tsData)[1],
+                tbl_df = {
+                  aux <- as.data.frame(tsData)
+                  xts::as.xts(aux[, -1], order.by = aux[, 1])
+                },
+                data.frame = xts::as.xts(tsData[, -1], 
+                                         order.by = tsData[, 1]),
+                xts = tsData,
+                mts = xts::as.xts(tsData),
+                ts = xts::as.xts(tsData))
+  
+  # Extract the values of the xkey depending on the class 
+  # of the index
+  xkey <- switch(class(zoo::index(xtsData)),
+           yearmon = substr(zoo::as.Date.yearmon(index(xtsData)), 1, 7),
+           Date = zoo::index(xtsData))
+  
+  # Give a name to the data in case of only one timeseries
+  if (is.null(names(xtsData))) names(xtsData) <- "data"
+  
+  # Create the data part
+  morrisjs$x$data <- lapply(1:nrow(xtsData), function(i) {
+    l <- c(list(xkey[i]), as.list(as.character(xtsData[i])))
+    names(l) <- c("date", names(xtsData))
+    if (any(is.na(l))) l[is.na(l)] <- 'null'
+    l
+  })
+  
+  # Add general fields
+  morrisjs$x$xkey = "date"
+  morrisjs$x$ykeys = names(xtsData)
+  morrisjs$x$labels = names(xtsData)
+  morrisjs$x$type = type
+  
+  # Add options
+  if (!is.null(options)){
+    morrisjs$x <- merge_lists(morrisjs$x, options)
+  }
+  morrisjs
+}
+```
+]
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+  ### - JavaScript binding
+  ### - Dependencies
+  ## morrisjs
+  ### - JavaScript API
+  ### - R binding
+  ### - JavaScript binding
+  ]
+.right-column[
+
+```javascript
+ renderValue: function(el, x, instance) {
+  // Workaround if only one series is plotted
+  if ("ykeys" in x){
+    if (x.ykeys.constructor !== Array) {
+      x.ykeys = new Array(x.ykeys);
+    }
+    if (x.labels.constructor !== Array) {
+      x.labels = new Array(x.labels);
+    }
+  }
+  // Create the graph  
+  var mjs;
+  switch(x.type){
+    case "Line": 
+      mjs = new Morris.Line(x);
+      break;
+    case "Area": 
+      mjs = new Morris.Area(x);
+      break;
+    case "Bar": 
+      mjs = new Morris.Bar(x);
+      break;
+    case "Donut":
+      mjs = new Morris.Donut(x);
+      break;
+  }
+  // Draw it
+  mjs.draw();
+  }
+```
+]
+
+
+---
+.left-column[
+  ## sparkline
+  ### - R binding
+  ### - JavaScript binding
+  ### - Dependencies
+  ## morrisjs
+  ### - JavaScript API
+  ### - R binding
+  ### - JavaScript binding
+  ### - Dependencies
+  ]
+.right-column[
+
+```
+dependencies:
+  - name: jquery
+    version: 1.11.3
+    src: htmlwidgets/lib/jquery-1.11.3
+    script: jquery-1.11.3.min.js
+  - name: raphael
+    version: 2.1.2
+    src: htmlwidgets/lib/raphael-2.1.2
+    script: raphael-min.js
+  - name: morris.js
+    version: 0.5.1
+    src: htmlwidgets/lib/morris.js-0.5.1
+    script: morris.min.js
+    stylesheet: morris.css
+```
+]
+---
+class: center, middle, inverse
+
+## A more complex example: d3treeR
+
+
+---
+.left-column[
+  ## d3treeR
+  ]
+.right-column[
+
+[d3treeR](https://github.com/timelyportfolio/d3treeR) is a widget created by Kenton Russell as part of his [Building Widgets](http://www.buildingwidgets.com/blog/) project.
+
+
+
+Its purpose is to create interactive treemaps created by the R **treemap** package or with JSON data.
+
+On the JavaScript side, this widget is not based on a library that provides ready-to-use charts but on [d3.js](https://d3js.org/). 
+
+A full-fledged explanation of D3 is outside the scope of this presentation but to give you an idea:
+
+<blockquote class = 'quote' cite="https://d3js.org">D3.js is a JavaScript library for manipulating documents based on data. It allows you to bind arbitrary data to a Document Object Model (DOM), and then apply data-driven transformations to the document. Styles, attributes, and other properties can be specified as <em>functions of data</em> in D3, not just simple constants.</blockquote>
+
+.small-text[.right[From [d3js.org](https://d3js.org)]]
+]
+
+
+---
+.left-column[
+  ## d3treeR
+  ## R binding
+  ]
+.right-column[
+
+```r
+d3tree <- function(data = NULL, rootname = NULL, id = "id", 
+                   celltext = "name", valueField = "size", 
+                   width = NULL, height = NULL) {
+  meta = NULL
+  legend = NULL
+  # accept treemap
+  if( inherits(data,"list" ) && names(data)[1] == "tm" ){
+    meta = data[-1]
+    data = convert_treemap(
+      data$tm
+      , ifelse(!is.null(rootname),rootname,deparse(substitute(data)))
+    )
+    legend = extract_legend()
+  }
+
+  # accept JSON string
+  if( inherits(data,c("character","connection")) ){
+    data = jsonlite::toJSON(jsonlite::fromJSON(data), 
+                            auto_unbox = TRUE, 
+                            dataframe = "rows")
+  }
+  
+  # accept list
+  #  here we shouldn't need to do anything
+
+  # forward options using x
+  x = list(data = data,
+           meta = meta,
+           options = list(id = id, celltext = celltext, 
+                          valueField = valueField))
+
+  # create widget
+  htmlwidgets::createWidget(
+    name = 'd3tree',
+    x,
+    width = width,
+    height = height,
+    package = 'd3treeR'
+  )
+}
+```
+]
+
+
+---
+.left-column[
+  ## d3treeR
+  ## R binding
+  ## JavaScript binding
+  ]
+.right-column[
+
+See on [GitHub](https://github.com/timelyportfolio/d3treeR/blob/master/inst/htmlwidgets/d3tree.js)
+]
+
+---
+.left-column[
+  ## d3treeR
+  ## R binding
+  ## JavaScript binding
+  ## Dependencies
+  ]
+.right-column[
+```
+dependencies:
+  - name: d3
+    version: 3.5.5
+    src: htmlwidgets/lib/d3
+    script: d3.min.js
+  - name: d3tree
+    version: 0.1
+    src: htmlwidgets/lib/d3tree
+    stylesheet: d3tree.css
+```
+]
+
+---
+
+# What now ?
+
++ follow the official tutorial: [http://www.htmlwidgets.org/index.html](http://www.htmlwidgets.org/index.html)
+
++ get inspired: 
+  + [http://gallery.htmlwidgets.org/](http://gallery.htmlwidgets.org/)
+  
+  + [http://www.buildingwidgets.com/blog](http://www.buildingwidgets.com/blog)
+  
++ contribute to existing widgets,
+
++ find a JavaScript library and make your own,
+
++ learn D3
+
+---
+class: center, middle, inverse
+
+## Thanks for your attention, any questions ?
+
+### GitHub: [https://github.com/Tutuchan](https://github.com/Tutuchan)
+
+### Twitter: [https://twitter.com/Tutuchan](https://twitter.com/Tutuchan)
+
+    </textarea>
+   <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      remark.macros.scale = function (percentage) {
+        var url = this;
+        return '<img src="' + url + '" style="width: ' + percentage + '" />';
+      };
+      var slideshow = remark.create({
+          highlightStyle: 'sunburst',
+          highlightLanguage: 'r',
+          highlightLines: true
+        }) ;
+    </script>
+  </body>
+</html>
