@@ -419,7 +419,7 @@ dependencies:
   - name: foo
     version: 1.0
     src: htmlwidgets/lib/foo-1.0
-    script: jquery-1.0.js
+    script: foo-1.0.js
   - name: bar
     version: 2.0
     src: htmlwidgets/lib/bar-2.0
@@ -755,7 +755,7 @@ baseChart <- function(morrisjs, type, options){
 .right-column[
 
 ```javascript
- renderValue: function(el, x, instance) {
+ renderValue: function(el, x) {
   // Workaround if only one series is plotted
   if ("ykeys" in x){
     if (x.ykeys.constructor !== Array) {
@@ -956,6 +956,7 @@ class: center, middle, inverse
 ### GitHub: [https://github.com/Tutuchan](https://github.com/Tutuchan)
 
 ### Twitter: [https://twitter.com/Tutuchan](https://twitter.com/Tutuchan)
+
 
     </textarea>
    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
